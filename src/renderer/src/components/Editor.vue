@@ -83,6 +83,8 @@ const editorValueInit = async (): Promise<void> => {
             toastEditor.setMarkdown(editorValue.value);
           }
         }
+      } else {
+        editorValue.value = "";
       }
     } catch (error) {
       console.error("Failed to read file:", error);
