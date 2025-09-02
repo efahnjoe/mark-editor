@@ -7,6 +7,9 @@ declare global {
     api: {
       readFile: (filePath: string) => Promise<Result>;
       writeFile: (filePath: string, content: string) => Promise<Result>;
+
+      getVersion: () => Promise<Result>;
+      checkUpdate: () => Promise<Result>;
     };
   }
 }

@@ -5,6 +5,7 @@ import fs from "fs-extra";
 
 import icon from "../../resources/electron.png?asset";
 import { result } from "../utils/result";
+import { getVersion, checkUpdate } from "./version";
 
 function createWindow(): void {
   // Create the browser window.
@@ -118,4 +119,28 @@ ipcMain.handle("file:write", async (_event, filePath, content) => {
 
     return r;
   }
+});
+
+ipcMain.handle("version:get", async () => {
+  // const r = result({
+  //   success: true,
+  //   code: 200,
+  //   data: {
+  //     message: getVersion()
+  //   }
+  // });
+
+  return getVersion();
+});
+
+ipcMain.handle("version:check", async () => {
+  // const r = result({
+  //   success: true,
+  //   code: 200,
+  //   data: {
+  //     message: await checkUpdate()
+  //   }
+  // });
+
+  return await checkUpdate();
 });

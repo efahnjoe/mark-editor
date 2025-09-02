@@ -5,7 +5,9 @@ import { electronAPI } from "@electron-toolkit/preload";
 const api = {
   readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("file:read", filePath),
   writeFile: (filePath: string, content: string) =>
-    electronAPI.ipcRenderer.invoke("file:write", filePath, content)
+    electronAPI.ipcRenderer.invoke("file:write", filePath, content),
+  getVersion: () => electronAPI.ipcRenderer.invoke("version:get"),
+  checkUpdate: () => electronAPI.ipcRenderer.invoke("version:check")
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
