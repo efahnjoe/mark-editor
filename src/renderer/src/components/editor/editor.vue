@@ -83,6 +83,8 @@ const editorValueInit = async (): Promise<void> => {
             toastEditor.setMarkdown(editorValue.value);
           }
         }
+      } else {
+        editorValue.value = "";
       }
     } catch (error) {
       console.error("Failed to read file:", error);
@@ -147,6 +149,5 @@ defineExpose({
   getInstance: () => toastEditor
 });
 
-// 触发更新
 const emit = defineEmits(["update:value"]);
 </script>
