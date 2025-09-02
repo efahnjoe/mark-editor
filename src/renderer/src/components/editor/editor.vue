@@ -149,6 +149,5 @@ defineExpose({
   getInstance: () => toastEditor
 });
 
-// 触发更新
 const emit = defineEmits(["update:value"]);
 </script>
