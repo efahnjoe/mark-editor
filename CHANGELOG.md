@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/efahnjoe/mark-editor/compare/v0.2.0...v0.3.0) (2025-09-03)
+
+
+### Features
+
+* add application icon and update `README` with attribution ([e0abdfc](https://github.com/efahnjoe/mark-editor/commit/e0abdfc1bf337343423a83a7d2128eed64575e22))
+
 ## [0.2.0](https://github.com/efahnjoe/mark-editor/compare/v0.1.0...v0.2.0) (2025-09-02)
 
 
