@@ -1,0 +1,108 @@
+name: Publish App to GitHub Releases
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - "v*"
+
+jobs:
+  build-windows:
+    name: Build Windows Installer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Electron for Windows
+        run: pnpm run build:win
+
+      - name: Upload Windows Assets to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/*.exe
+            dist/*.msi
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+  build-linux:
+    name: Build Linux Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build Electron for Linux
+        run: pnpm run build:linux
+
+      - name: Upload Linux Assets to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.snap
+          token: ${{ secrets.RELEASE_TOKEN }}
+
+  # build-macos:
+  #   name: Build MacOS Package
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v5
+  #       with:
+  #         ref: ${{ github.ref }}
+
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: "20"
+  #         cache: "pnpm"
+
+  #     - name: Install pnpm
+  #       run: npm install -g pnpm
+
+  #     - name: Install dependencies
+  #       run: pnpm install
+
+  #     - name: Build Electron for MacOS
+  #       run: pnpm run build:mac
+
+  #     - name: Upload MacOS Assets to Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         tag_name: ${{ github.ref_name }}
+  #         files: |
+  #           dist/*.dmg
+  #           dist/*.app
+  #         token: ${{ secrets.RELEASE_TOKEN }}
