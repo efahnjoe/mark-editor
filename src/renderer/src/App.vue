@@ -16,15 +16,12 @@
 
   <el-container class="h-screen w-screen">
     <el-main class="h-full w-full">
-      <Editor :path="path" height="100%" />
+      <router-view />
     </el-main>
   </el-container>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import Editor from "./components/editor/editor.vue";
 import { ElContainer, ElMain } from "element-plus";
-
-const path = ref("/home/efahnjoe/Dev/mark-editor/README.md");
+import { RouterView } from "vue-router";
 </script>
