@@ -12,6 +12,11 @@
     "composite": true,
     "types": [
       "electron-vite/node"
-    ]
+    ],
+    "paths": {
+      "@utils/*": [
+        "./src/utils/*"
+      ]
+    }
   }
 }

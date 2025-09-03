@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import fs from "fs-extra";
 
 import icon from "../../resources/electron.png?asset";
-import { result } from "../utils/result";
+import { ok, fail } from "@utils/result";
 import { getVersion, checkUpdate } from "./version";
 
 function createWindow(): void {
@@ -78,25 +78,11 @@ app.on("window-all-closed", () => {
 // code. You can also put them in separate files and require them here.
 ipcMain.handle("file:read", async (_event, path) => {
   try {
-    const data = fs.readFileSync(path, "utf-8");
+    const content = fs.readFileSync(path, "utf-8");
 
-    const r = result({
-      success: true,
-      code: 200,
-      data: {
-        message: data
-      }
-    });
-
-    return r;
+    return ok({ content });
   } catch (error) {
-    const r = result({
-      success: false,
-      code: 500,
-      error: error
-    });
-
-    return r;
+    return fail(error);
   }
 });
 
@@ -104,43 +90,18 @@ ipcMain.handle("file:write", async (_event, filePath, content) => {
   try {
     await fs.writeFile(filePath, content, "utf-8");
 
-    const r = result({
-      success: true,
-      code: 200
+    return ok({
+      message: "File written successfully"
     });
-
-    return r;
   } catch (error) {
-    const r = result({
-      success: false,
-      code: 500,
-      error: error
-    });
-
-    return r;
+    return fail(error);
   }
 });
 
 ipcMain.handle("version:get", async () => {
-  // const r = result({
-  //   success: true,
-  //   code: 200,
-  //   data: {
-  //     message: getVersion()
-  //   }
-  // });
-
   return getVersion();
 });
 
 ipcMain.handle("version:check", async () => {
-  // const r = result({
-  //   success: true,
-  //   code: 200,
-  //   data: {
-  //     message: await checkUpdate()
-  //   }
-  // });
-
   return await checkUpdate();
 });

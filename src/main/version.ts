@@ -1,7 +1,7 @@
 import { app } from "electron";
 import semver from "semver";
-import { result } from "../utils/result";
-import type { Result } from "../utils/result";
+import { ok, fail } from "@utils/result";
+import type { Ok, Result } from "@utils/result";
 
 const version = app.getVersion();
 
@@ -11,17 +11,23 @@ if (!GITHUB_REPO) {
   console.warn("VITE_GITHUB_REPO not configured, update check will be skipped.");
 }
 
-export const getVersion = (): string => {
-  return version;
+export const getVersion = (): Ok<{
+  version: string;
+}> => {
+  return ok({ version });
 };
 
-export const checkUpdate = async (): Promise<Result> => {
+export const checkUpdate = async (): Promise<
+  Result<{
+    message: string;
+    hasUpdate: boolean;
+    latestVersion: string;
+    currentVersion: string;
+    releaseUrl: string;
+  }>
+> => {
   if (!GITHUB_REPO) {
-    return result({
-      success: false,
-      code: 500,
-      error: "GITHUB_REPO not configured, update check will be skipped."
-    });
+    return fail("GITHUB_REPO not configured, update check will be skipped.");
   }
 
   try {
@@ -36,7 +42,7 @@ export const checkUpdate = async (): Promise<Result> => {
     });
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      return fail(`HTTP ${res.status}: ${res.statusText}`, res.status);
     }
 
     const data = await res.json();
@@ -44,30 +50,18 @@ export const checkUpdate = async (): Promise<Result> => {
 
     const latestVersion = remoteTag.replace(/^v/, "");
 
-    console.log("latestVersion:", latestVersion);
-
-    const localVersion = getVersion().replace(/^v/, "");
+    const localVersion = getVersion().payload.version.replace(/^v/, "");
 
     const hasUpdate = semver.gt(latestVersion, localVersion);
 
-    return result({
-      success: true,
-      code: 200,
-      data: {
-        message: "Check update completed.",
-        hasUpdate,
-        latestVersion,
-        currentVersion: localVersion,
-        releaseUrl: data.html_url
-      }
+    return ok({
+      message: "Check update completed.",
+      hasUpdate,
+      latestVersion,
+      currentVersion: localVersion,
+      releaseUrl: data.html_url
     });
   } catch (error) {
-    console.error(error);
-
-    return result({
-      success: false,
-      code: 500,
-      error
-    });
+    return fail(error);
   }
 };

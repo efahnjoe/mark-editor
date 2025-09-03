@@ -76,8 +76,8 @@ const editorValueInit = async (): Promise<void> => {
       if (props.path !== "") {
         const result = await window.api.readFile(props.path);
 
-        if (result.success && result.data?.message != null) {
-          editorValue.value = result.data.message;
+        if (result.success && result.payload.content != null) {
+          editorValue.value = result.payload.content;
 
           if (toastEditor) {
             toastEditor.setMarkdown(editorValue.value);
