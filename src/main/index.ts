@@ -3,7 +3,7 @@ import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import fs from "fs-extra";
 
-import icon from "../../resources/electron.png?asset";
+import icon from "../../resources/icon.png?asset";
 import { ok, fail } from "@utils/result";
 import { getVersion, checkUpdate } from "./version";
 
