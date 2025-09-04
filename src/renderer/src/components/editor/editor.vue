@@ -15,7 +15,17 @@ import {
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/editor";
 
+import type { PropType } from "vue";
+
+interface EditorOptions {
+  hideModeSwitch?: boolean;
+}
+
 const props = defineProps({
+  options: {
+    type: Object as PropType<EditorOptions>,
+    default: () => ({})
+  },
   height: {
     type: String,
     default: "500px"
@@ -52,6 +62,9 @@ const editorInit = (): void => {
       initialEditType: props.initialEditType,
       previewStyle: props.previewStyle,
       initialValue: editorValue.value,
+      autofocus: false, // Disable auto focus
+      toolbarItems: [],
+      scrollIntoView: false,
       events: {
         change: () => {
           const value = toastEditor?.getMarkdown() || "";
