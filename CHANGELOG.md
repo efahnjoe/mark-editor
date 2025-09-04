@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/efahnjoe/mark-editor/compare/v0.3.0...v0.4.0) (2025-09-04)
+
+
+### Features
+
+* **renderer/router:** refactor App component to support Vue Router ([#10](https://github.com/efahnjoe/mark-editor/issues/10)) ([4c4d360](https://github.com/efahnjoe/mark-editor/commit/4c4d3601aa8c83da320baaccaa047c2a554d7869))
+
 ## [0.3.0](https://github.com/efahnjoe/mark-editor/compare/v0.2.0...v0.3.0) (2025-09-03)
 
 
