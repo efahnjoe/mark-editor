@@ -1,8 +1,23 @@
 import { contextBridge } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
+import type { Context } from "@utils/logger";
 
 // Custom APIs for renderer
 const api = {
+  logger: {
+    log: (level: string, message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:log", level, message, module, context),
+    error: (message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:error", message, module, context),
+    warn: (message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:warn", message, module, context),
+    info: (message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:info", message, module, context),
+    verbose: (message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:verbose", message, module, context),
+    debug: (message: string, module?: string, context?: Context) =>
+      electronAPI.ipcRenderer.send("logger:debug", message, module, context)
+  },
   readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("file:read", filePath),
   writeFile: (filePath: string, content: string) =>
     electronAPI.ipcRenderer.invoke("file:write", filePath, content),

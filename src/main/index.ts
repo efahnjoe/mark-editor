@@ -1,11 +1,11 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
-import fs from "fs-extra";
 
 import icon from "../../resources/icon.png?asset";
-import { ok, fail } from "@utils/result";
 import { getVersion, checkUpdate } from "./version";
+import { fileRead, fileWrite } from "./file";
+import { logger, Context } from "@utils/logger";
 
 function createWindow(): void {
   // Create the browser window.
@@ -74,28 +74,47 @@ app.on("window-all-closed", () => {
   }
 });
 
+// const LOG_DIR = join(app.getPath("userData"), "logs");
+
+// contextBridge.exposeInMainWorld("electronAPI", {
+//   getLogPath: () => LOG_DIR
+// });
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-ipcMain.handle("file:read", async (_event, path) => {
-  try {
-    const content = fs.readFileSync(path, "utf-8");
-
-    return ok({ content });
-  } catch (error) {
-    return fail(error);
+ipcMain.on(
+  "logger:log",
+  (_event, level: string, message: string, module?: string, context?: Context) => {
+    return logger.log(level, message, module, context);
   }
+);
+
+ipcMain.on("logger:error", (_event, message: string, module?: string, context?: Context) => {
+  return logger.error(message, module, context);
+});
+
+ipcMain.on("logger:warn", (_event, message: string, module?: string, context?: Context) => {
+  return logger.warn(message, module, context);
+});
+
+ipcMain.on("logger:info", (_event, message: string, module?: string, context?: Context) => {
+  return logger.info(message, module, context);
+});
+
+ipcMain.on("logger:verbose", (_event, message: string, module?: string, context?: Context) => {
+  return logger.verbose(message, module, context);
+});
+
+ipcMain.on("logger:debug", (_event, message: string, module?: string, context?: Context) => {
+  return logger.debug(message, module, context);
+});
+
+ipcMain.handle("file:read", async (_event, path) => {
+  return fileRead(path);
 });
 
 ipcMain.handle("file:write", async (_event, filePath, content) => {
-  try {
-    await fs.writeFile(filePath, content, "utf-8");
-
-    return ok({
-      message: "File written successfully"
-    });
-  } catch (error) {
-    return fail(error);
-  }
+  return fileWrite(filePath, content);
 });
 
 ipcMain.handle("version:get", async () => {

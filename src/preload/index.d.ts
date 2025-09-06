@@ -5,6 +5,32 @@ declare global {
   interface Window {
     electron: ElectronAPI;
     api: {
+      logger: {
+        log: (
+          level: string,
+          message: string,
+          module?: string | undefined,
+          context?: Context | undefined
+        ) => void;
+        debug: (
+          message: string,
+          module?: string | undefined,
+          context?: Context | undefined
+        ) => void;
+        info: (message: string, module?: string | undefined, context?: Context | undefined) => void;
+        warn: (message: string, module?: string | undefined, context?: Context | undefined) => void;
+        error: (
+          message: string,
+          module?: string | undefined,
+          context?: Context | undefined
+        ) => void;
+        verbose: (
+          message: string,
+          module?: string | undefined,
+          context?: Context | undefined
+        ) => void;
+      };
+
       readFile: (filePath: string) => Promise<
         Result<{
           content: string;
