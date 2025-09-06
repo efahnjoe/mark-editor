@@ -1,6 +1,6 @@
 import { resolve, join } from "path";
 import { readFileSync } from "fs";
-import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import { defineConfig, externalizeDepsPlugin, swcPlugin } from "electron-vite";
 import vue from "@vitejs/plugin-vue";
 import VueRouter from "unplugin-vue-router/vite";
 
@@ -20,7 +20,7 @@ export default defineConfig({
         "@utils": join(UTILS_PATH)
       }
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin(), swcPlugin()]
   },
   preload: {
     resolve: {

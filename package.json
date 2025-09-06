@@ -21,14 +21,15 @@
     "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
     "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
     "typecheck": "pnpm run typecheck:node && pnpm run typecheck:web",
+    "clean": "rimraf dist out",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "build": "pnpm run typecheck && electron-vite build",
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "pnpm run build && electron-builder --dir",
-    "build:win": "pnpm run build && electron-builder --win",
-    "build:mac": "pnpm run build && electron-builder --mac",
-    "build:linux": "pnpm run build && electron-builder --linux",
+    "build:win": "pnpm run build && electron-builder --win --publish never",
+    "build:mac": "pnpm run build && electron-builder --mac --publish never",
+    "build:linux": "pnpm run build && electron-builder --linux --publish never",
     "build:all": "pnpm run build:win && pnpm run build:linux"
   },
   "engines": {
@@ -50,12 +51,15 @@
     "postcss": "^8.5.6",
     "semver": "^7.7.2",
     "tailwindcss": "^4.1.12",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.0.0",
     "@electron-toolkit/tsconfig": "^1.0.1",
+    "@swc/core": "^1.13.5",
     "@types/node": "^24.3.0",
     "@types/semver": "^7.7.0",
     "@vitejs/plugin-vue": "^6.0.0",
@@ -79,6 +83,9 @@
     "onlyBuiltDependencies": [
       "electron",
       "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "@swc/core"
     ]
   }
 }
