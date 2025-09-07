@@ -9,6 +9,7 @@ const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf-8")
 const MAIN_PATH = resolve("src/main");
 const PRELOAD_PATH = resolve("src/preload");
 const RENDERER_PATH = resolve("src/renderer/src");
+const TYPES_PATH = resolve("src/types");
 const UTILS_PATH = resolve("src/utils");
 
 export default defineConfig({
@@ -16,7 +17,7 @@ export default defineConfig({
     resolve: {
       alias: {
         "@main": join(MAIN_PATH),
-        "@components": join(RENDERER_PATH, "components"),
+        "@shared/types": join(TYPES_PATH),
         "@utils": join(UTILS_PATH)
       }
     },
@@ -26,7 +27,7 @@ export default defineConfig({
     resolve: {
       alias: {
         "@preload": join(PRELOAD_PATH),
-        "@components": join(RENDERER_PATH, "components"),
+        "@shared/types": join(TYPES_PATH),
         "@utils": join(UTILS_PATH)
       }
     },
@@ -41,6 +42,7 @@ export default defineConfig({
       alias: {
         "@renderer": join(RENDERER_PATH),
         "@components": join(RENDERER_PATH, "components"),
+        "@shared/types": join(TYPES_PATH),
         "@utils": join(UTILS_PATH)
       }
     },
