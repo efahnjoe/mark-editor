@@ -18,9 +18,9 @@ const api = {
     debug: (message: string, module?: string, context?: Context) =>
       electronAPI.ipcRenderer.send("logger:debug", message, module, context)
   },
-  readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("file:read", filePath),
+  readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("fs:readFile", filePath),
   writeFile: (filePath: string, content: string) =>
-    electronAPI.ipcRenderer.invoke("file:write", filePath, content),
+    electronAPI.ipcRenderer.invoke("fs:writeFile", filePath, content),
   getVersion: () => electronAPI.ipcRenderer.invoke("version:get"),
   checkUpdate: () => electronAPI.ipcRenderer.invoke("version:check")
 };

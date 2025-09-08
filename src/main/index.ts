@@ -4,7 +4,7 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 
 import icon from "../../resources/icon.png?asset";
 import { getVersion, checkUpdate } from "./version";
-import { fileRead, fileWrite } from "./file";
+import { readFile, writeFile } from "./fs";
 import { logger, Context } from "@utils/logger";
 
 function createWindow(): void {
@@ -109,12 +109,12 @@ ipcMain.on("logger:debug", (_event, message: string, module?: string, context?: 
   return logger.debug(message, module, context);
 });
 
-ipcMain.handle("file:read", async (_event, path) => {
-  return fileRead(path);
+ipcMain.handle("fs:fileRead", async (_event, path) => {
+  return readFile(path);
 });
 
-ipcMain.handle("file:write", async (_event, filePath, content) => {
-  return fileWrite(filePath, content);
+ipcMain.handle("fs:fileWirte", async (_event, filePath, content) => {
+  return writeFile(filePath, content);
 });
 
 ipcMain.handle("version:get", async () => {

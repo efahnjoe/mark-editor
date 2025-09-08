@@ -1,9 +1,9 @@
-import { writeFile, readFile } from "node:fs/promises";
+import { writeFile as fsWriteFile, readFile as fsReadFile } from "node:fs/promises";
 import { Result, ok, fail } from "@utils/result";
 
-export const fileRead = async (path: string): Promise<Result<{ content: string }>> => {
+export const readFile = async (path: string): Promise<Result<{ content: string }>> => {
   try {
-    const content = await readFile(path, { encoding: "utf8" });
+    const content = await fsReadFile(path, { encoding: "utf8" });
 
     return ok({ content });
   } catch (error) {
@@ -11,7 +11,7 @@ export const fileRead = async (path: string): Promise<Result<{ content: string }
   }
 };
 
-export const fileWrite = async (
+export const writeFile = async (
   path: string,
   content: string,
   signal?: AbortSignal
@@ -21,7 +21,7 @@ export const fileWrite = async (
   }>
 > => {
   try {
-    await writeFile(path, content, { signal });
+    await fsWriteFile(path, content, { signal });
 
     return ok({
       message: `File written successfully: ${path}`
