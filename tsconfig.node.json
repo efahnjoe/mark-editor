@@ -9,7 +9,8 @@
   ],
   "compilerOptions": {
     "newLine": "lf",
-    "ignoreDeprecations": "6.0",
+    "module": "node16",
+    "moduleResolution": "node16",
     "moduleDetection": "force",
     "composite": true,
     "types": [
