@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/efahnjoe/mark-editor/compare/v0.4.0...v0.5.0) (2025-09-25)
+
+
+### Features
+
+* overhaul file system layer, logging, types, and build pipeline ([a726762](https://github.com/efahnjoe/mark-editor/commit/a7267621074978442d96f5cc467c8d3ceaf04865))
+
 ## [0.4.0](https://github.com/efahnjoe/mark-editor/compare/v0.3.0...v0.4.0) (2025-09-04)
 
 
