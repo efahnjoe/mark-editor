@@ -26,14 +26,6 @@ export default tseslint.config(
         extraFileExtensions: [".vue"]
       }
     }
-    // rules: {
-    //   quotes: ["error", "double"],
-    //   semi: ["error", "always"],
-    //   "semi-spacing": ["error", { before: false, after: true }],
-    //   "quotes-quotes-spacing": ["error", "avoid"],
-    //   "no-console": "warn",
-    //   "no-debugger": "warn"
-    // }
   },
   {
     files: ["**/*.{ts,mts,tsx,vue}"],

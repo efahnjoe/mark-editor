@@ -1,6 +1,6 @@
 import { resolve, join } from "path";
 import { readFileSync } from "fs";
-import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import { defineConfig, externalizeDepsPlugin, swcPlugin } from "electron-vite";
 import vue from "@vitejs/plugin-vue";
 import VueRouter from "unplugin-vue-router/vite";
 
@@ -9,6 +9,7 @@ const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf-8")
 const MAIN_PATH = resolve("src/main");
 const PRELOAD_PATH = resolve("src/preload");
 const RENDERER_PATH = resolve("src/renderer/src");
+const TYPES_PATH = resolve("src/types");
 const UTILS_PATH = resolve("src/utils");
 
 export default defineConfig({
@@ -16,17 +17,17 @@ export default defineConfig({
     resolve: {
       alias: {
         "@main": join(MAIN_PATH),
-        "@components": join(RENDERER_PATH, "components"),
+        "@shared/types": join(TYPES_PATH),
         "@utils": join(UTILS_PATH)
       }
     },
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin(), swcPlugin()]
   },
   preload: {
     resolve: {
       alias: {
         "@preload": join(PRELOAD_PATH),
-        "@components": join(RENDERER_PATH, "components"),
+        "@shared/types": join(TYPES_PATH),
         "@utils": join(UTILS_PATH)
       }
     },
@@ -41,7 +42,9 @@ export default defineConfig({
       alias: {
         "@renderer": join(RENDERER_PATH),
         "@components": join(RENDERER_PATH, "components"),
-        "@utils": join(UTILS_PATH)
+        "@shared/types": join(TYPES_PATH),
+        "@utils": join(UTILS_PATH),
+        "@stores": join(RENDERER_PATH, "stores")
       }
     },
     plugins: [

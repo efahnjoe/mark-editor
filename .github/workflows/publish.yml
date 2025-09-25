@@ -35,7 +35,8 @@ jobs:
           tag_name: ${{ github.ref_name }}
           files: |
             dist/*.exe
-            dist/*.msi
+            dist/*.zip
+            dist/*.blockmap
           token: ${{ secrets.RELEASE_TOKEN }}
 
   build-linux:
@@ -58,6 +59,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install RPM
+        run: |
+          sudo apt-get update
+          sudo apt-get install rpm
+
       - name: Build Electron for Linux
         run: pnpm run build:linux
 
@@ -68,7 +74,8 @@ jobs:
           files: |
             dist/*.AppImage
             dist/*.deb
-            dist/*.snap
+            dist/*.tar.gz
+            dist/*.rpm
           token: ${{ secrets.RELEASE_TOKEN }}
 
   # build-macos:
@@ -102,4 +109,6 @@ jobs:
   #         files: |
   #           dist/*.dmg
   #           dist/*.app
+  #           dist/*.zip
+  #           dist/*.blockmap
   #         token: ${{ secrets.RELEASE_TOKEN }}

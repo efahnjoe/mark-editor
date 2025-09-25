@@ -2,13 +2,19 @@
   "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
   "include": [
     "src/renderer/src/env.d.ts",
+    "src/renderer/src/router.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.vue",
-    "src/preload/*.d.ts"
+    "src/preload/*.d.ts",
+    "src/types/**/*",
+    "src/utils/**/*"
   ],
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "newLine": "lf",
+    // "ignoreDeprecations": "6.0",
+    // "module": "esnext",
+    "moduleResolution": "bundler",
+    "moduleDetection": "force",
     "composite": true,
     "baseUrl": ".",
     "paths": {
@@ -16,10 +22,16 @@
         "src/renderer/src/*"
       ],
       "@components/*": [
-        "src/renderer/src/components/*"
+        "./src/renderer/src/components/*"
       ],
       "@utils/*": [
-        "src/utils/*"
+        "./src/utils/*"
+      ],
+      "@shared/types/*": [
+        "./src/types/*"
+      ],
+      "@stores/*": [
+        "./src/renderer/src/stores/*"
       ]
     }
   }

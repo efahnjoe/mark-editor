@@ -4,11 +4,13 @@
     "electron.vite.config.*",
     "src/main/**/*",
     "src/preload/**/*",
-    "src/utils/**/*"
+    "src/utils/**/*",
+    "src/types/**/*"
   ],
   "compilerOptions": {
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "newLine": "lf",
+    "ignoreDeprecations": "6.0",
+    "moduleDetection": "force",
     "composite": true,
     "types": [
       "electron-vite/node"
@@ -16,6 +18,9 @@
     "paths": {
       "@utils/*": [
         "./src/utils/*"
+      ],
+      "@shared/types/*": [
+        "./src/types/*"
       ]
     }
   }
