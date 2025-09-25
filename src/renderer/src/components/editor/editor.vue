@@ -14,10 +14,13 @@ import {
 } from "vue";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor } from "@toast-ui/editor";
+import { debug } from "../../tools/index";
 
 import type { PropType } from "vue";
 
 interface EditorOptions {
+  module: "editor";
+  type: "markdown" | "wysiwyg";
   hideModeSwitch?: boolean;
 }
 
@@ -44,10 +47,6 @@ const props = defineProps({
   }
 });
 
-// const editorOptions = {
-//   hideModeSwitch: true
-// };
-
 const editorRef = ref<HTMLElement | null>(null);
 
 let toastEditor: Editor | null = null;
@@ -63,7 +62,7 @@ const editorInit = (): void => {
       previewStyle: props.previewStyle,
       initialValue: editorValue.value,
       autofocus: false, // Disable auto focus
-      toolbarItems: [],
+      focus: false,
       scrollIntoView: false,
       events: {
         change: () => {
@@ -73,6 +72,8 @@ const editorInit = (): void => {
         }
       }
     });
+
+    debug("Editor initialized");
   }
 };
 
@@ -84,26 +85,26 @@ const editorDestroy = (): void => {
 };
 
 const editorValueInit = async (): Promise<void> => {
-  if (window.api && typeof window.api.readFile === "function") {
-    try {
-      if (props.path !== "") {
-        const result = await window.api.readFile(props.path);
+  try {
+    if (props.path !== "") {
+      const result = await window.api.readFile(props.path);
 
-        if (result.success && result.payload.content != null) {
-          editorValue.value = result.payload.content;
+      if (result.success) {
+        debug("Reading file: %s", props.path);
 
-          if (toastEditor) {
-            toastEditor.setMarkdown(editorValue.value);
-          }
+        editorValue.value = result.payload.content;
+
+        if (toastEditor) {
+          toastEditor.setMarkdown(editorValue.value);
+
+          debug("Markdown set new value");
         }
-      } else {
-        editorValue.value = "";
       }
-    } catch (error) {
-      console.error("Failed to read file:", error);
+    } else {
+      editorValue.value = "";
     }
-  } else {
-    console.error("window.api is not exist");
+  } catch (error) {
+    window.api.logger.error(`Failed to read file: ${error}`, "Editor");
   }
 };
 
@@ -126,36 +127,49 @@ const saveToFile = async (): Promise<void> => {
   const content = toastEditor?.getMarkdown() || "";
 
   // Write back to the file
-  if (window.api && typeof window.api.writeFile === "function") {
-    try {
-      const result = await window.api.writeFile(props.path, content);
-      if (result.success) {
-        console.log("File saved successfully.");
-      } else {
-        console.error("File save failed:", result.error);
-      }
-    } catch (error) {
-      console.error("Write failed:", error);
+  try {
+    const result = await window.api.writeFile(props.path, content);
+    if (result.success) {
+      window.api.logger.info(`File saved successfully: ${props.path}`, "Editor");
+    } else {
+      window.api.logger.error(`File save failed: ${props.path} ${result.error}`, "Editor");
     }
+  } catch (error) {
+    window.api.logger.error(`Write failed: ${error}`, "Editor");
   }
 };
 
-onMounted(() => {
-  editorValueInit();
+const handleKeydown = ref<(e: KeyboardEvent) => void>(() => {});
+
+watch(
+  () => props.path,
+  async (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      await editorValueInit();
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
   editorInit();
 
-  const handleKeydown = (e: KeyboardEvent): void => {
+  if (toastEditor && editorValue.value) {
+    toastEditor.setMarkdown(editorValue.value);
+  }
+
+  handleKeydown.value = (e: KeyboardEvent): void => {
     if (e.ctrlKey && e.key === "s") {
       e.preventDefault();
       saveToFile();
     }
   };
-  window.addEventListener("keydown", handleKeydown);
 
-  // Remove event listeners when the component is destroyed.
-  onUnmounted(() => {
-    window.removeEventListener("keydown", handleKeydown);
-  });
+  window.addEventListener("keydown", handleKeydown.value);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("keydown", handleKeydown.value);
 });
 
 defineExpose({

@@ -42,15 +42,24 @@
     "@element-plus/icons-vue": "^2.3.2",
     "@tailwindcss/postcss": "^4.1.12",
     "@toast-ui/editor": "^3.2.2",
+    "@types/klaw": "^3.0.7",
     "autoprefixer": "^10.4.21",
+    "better-sqlite3": "^12.2.0",
+    "chokidar": "^4.0.3",
     "electron-updater": "^6.3.9",
     "element-plus": "^2.11.1",
     "element-plus-icon": "^0.0.1",
     "fs-extra": "^11.3.1",
     "fs-glob": "^1.1.23",
+    "iconv-lite": "^0.7.0",
+    "klaw": "^4.1.0",
+    "lru-cache": "^11.2.1",
+    "pinia": "^3.0.3",
     "postcss": "^8.5.6",
     "semver": "^7.7.2",
+    "splitpanes": "^4.0.4",
     "tailwindcss": "^4.1.12",
+    "uuid": "^13.0.0",
     "vue-router": "^4.5.1",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0"
@@ -62,6 +71,7 @@
     "@swc/core": "^1.13.5",
     "@types/node": "^24.3.0",
     "@types/semver": "^7.7.0",
+    "@types/splitpanes": "^2.2.6",
     "@vitejs/plugin-vue": "^6.0.0",
     "electron": "^37.2.3",
     "electron-builder": "^26.0.20",
@@ -85,7 +95,10 @@
       "esbuild"
     ],
     "ignoredBuiltDependencies": [
-      "@swc/core"
+      "@swc/core",
+      "@tailwindcss/oxide",
+      "better-sqlite3",
+      "vue-demi"
     ]
   }
 }

@@ -1,5 +1,6 @@
 import { ElectronAPI } from "@electron-toolkit/preload";
-import type { Result, Ok } from "../utils/result";
+import type { Result } from "../utils/result";
+import type { FsNode } from "@shared/types/index";
 
 declare global {
   interface Window {
@@ -31,6 +32,35 @@ declare global {
         ) => void;
       };
 
+      fs: {
+        open: {
+          folder: () => Promise<
+            Result<{
+              path: string[];
+            }>
+          >;
+          file: () => Promise<
+            Result<{
+              path: string[];
+            }>
+          >;
+        };
+        node: (root: string | string[], maxDepth?: number) => Promise<Result<{ tree: FsNode[] }>>;
+        watcher: {
+          create: (
+            path: string | string[],
+            depth?: number
+          ) => Promise<
+            Result<{
+              watchId: string;
+              path: string | string[];
+            }>
+          >;
+          close: (watchId: string) => Promise<Result<{ message: string }>>;
+          add: (watchId: string, path: string) => Promise<Result<{ message: string }>>;
+        };
+      };
+
       readFile: (filePath: string) => Promise<
         Result<{
           content: string;
@@ -46,7 +76,7 @@ declare global {
       >;
 
       getVersion: () => Promise<
-        Ok<{
+        Result<{
           version: string;
         }>
       >;

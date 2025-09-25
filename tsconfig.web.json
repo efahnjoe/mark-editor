@@ -5,12 +5,15 @@
     "src/renderer/src/router.d.ts",
     "src/renderer/src/**/*",
     "src/renderer/src/**/*.vue",
-    "src/preload/*.d.ts"
+    "src/preload/*.d.ts",
+    "src/types/**/*",
+    "src/utils/**/*"
   ],
   "compilerOptions": {
     "newLine": "lf",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    // "ignoreDeprecations": "6.0",
+    // "module": "esnext",
+    "moduleResolution": "bundler",
     "moduleDetection": "force",
     "composite": true,
     "baseUrl": ".",
@@ -26,6 +29,9 @@
       ],
       "@shared/types/*": [
         "./src/types/*"
+      ],
+      "@stores/*": [
+        "./src/renderer/src/stores/*"
       ]
     }
   }

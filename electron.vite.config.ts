@@ -43,7 +43,8 @@ export default defineConfig({
         "@renderer": join(RENDERER_PATH),
         "@components": join(RENDERER_PATH, "components"),
         "@shared/types": join(TYPES_PATH),
-        "@utils": join(UTILS_PATH)
+        "@utils": join(UTILS_PATH),
+        "@stores": join(RENDERER_PATH, "stores")
       }
     },
     plugins: [

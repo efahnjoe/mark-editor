@@ -4,7 +4,16 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 
 import icon from "../../resources/icon.png?asset";
 import { getVersion, checkUpdate } from "./version";
-import { readFile, writeFile } from "./fs";
+import {
+  fsWatcherCreate,
+  fsNode,
+  readFile,
+  writeFile,
+  fsWatcherClose,
+  fsWatcherAdd,
+  fsOpenFolder,
+  fsOpenFile
+} from "./fs/index";
 import { logger, Context } from "@utils/logger";
 
 function createWindow(): void {
@@ -74,12 +83,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-// const LOG_DIR = join(app.getPath("userData"), "logs");
-
-// contextBridge.exposeInMainWorld("electronAPI", {
-//   getLogPath: () => LOG_DIR
-// });
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 ipcMain.on(
@@ -109,11 +112,35 @@ ipcMain.on("logger:debug", (_event, message: string, module?: string, context?: 
   return logger.debug(message, module, context);
 });
 
-ipcMain.handle("fs:fileRead", async (_event, path) => {
+ipcMain.handle("fs:open:folder", async () => {
+  return fsOpenFolder();
+});
+
+ipcMain.handle("fs:open:file", async () => {
+  return fsOpenFile();
+});
+
+ipcMain.handle("fs:node", async (_event, path, maxDepth) => {
+  return fsNode(path, maxDepth);
+});
+
+ipcMain.handle("fs:watcher:create", async (_event, path, depth) => {
+  return fsWatcherCreate(path, depth);
+});
+
+ipcMain.handle("fs:watcher:close", async (_event, watchId) => {
+  return fsWatcherClose(watchId);
+});
+
+ipcMain.handle("fs:watcher:add", async (_event, watchId, path) => {
+  return fsWatcherAdd(watchId, path);
+});
+
+ipcMain.handle("fs:file:read", async (_event, path) => {
   return readFile(path);
 });
 
-ipcMain.handle("fs:fileWirte", async (_event, filePath, content) => {
+ipcMain.handle("fs:file:write", async (_event, filePath, content) => {
   return writeFile(filePath, content);
 });
 

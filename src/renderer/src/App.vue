@@ -1,27 +1,32 @@
 <template>
-  <!-- <el-container class="h-screen w-screen">
-    <el-header>
-      <el-container>
-        <el-aside class="w-1/4 h-full">
-          <el-container class="w-4/3 h-full">
-            <el-main>
-              <Editor />
-            </el-main>
-            <el-footer></el-footer>
-          </el-container>
-        </el-aside>
-      </el-container>
-    </el-header>
-  </el-container> -->
-
   <el-container class="h-screen w-screen">
-    <el-main class="h-full w-full">
-      <router-view />
-    </el-main>
+    <el-header class="border-bottom" height="33px">
+      <Header />
+    </el-header>
+    <el-container>
+      <el-container class="h-full">
+        <el-aside class="h-full" width="64px">
+          <Aside />
+        </el-aside>
+        <el-main>
+          <Main />
+        </el-main>
+      </el-container>
+
+      <el-footer height="33px"></el-footer>
+    </el-container>
   </el-container>
 </template>
 
 <script lang="ts" setup>
-import { ElContainer, ElMain } from "element-plus";
-import { RouterView } from "vue-router";
+import { ElContainer, ElHeader, ElAside, ElMain, ElFooter } from "element-plus";
+import Header from "@components/header/header.vue";
+import Aside from "@components/aside/aside.vue";
+import Main from "@components/main/main.vue";
 </script>
+
+<style scoped>
+.border-bottom {
+  border-bottom: 1px solid var(--el-border-color);
+}
+</style>

@@ -1,2 +1,2 @@
-export * from "./fs/index";
-export * from "./mutable";
+export * from "./fs/index.js";
+export * from "./mutable.js";

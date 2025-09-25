@@ -18,9 +18,26 @@ const api = {
     debug: (message: string, module?: string, context?: Context) =>
       electronAPI.ipcRenderer.send("logger:debug", message, module, context)
   },
-  readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("fs:readFile", filePath),
+  fs: {
+    open: {
+      folder: () => electronAPI.ipcRenderer.invoke("fs:open:folder"),
+      file: () => electronAPI.ipcRenderer.invoke("fs:open:file")
+    },
+    node: (path: string, maxDepth?: number) =>
+      electronAPI.ipcRenderer.invoke("fs:node", path, maxDepth),
+    // watcher: (path: string) => electronAPI.ipcRenderer.send("fs:watcher", path)
+    watcher: {
+      create: (path: string | string[], depth?: number) =>
+        electronAPI.ipcRenderer.invoke("fs:watcher:create", path, depth),
+      close: (watchId: string) => electronAPI.ipcRenderer.invoke("fs:watcher:close", watchId),
+      add: (watchId: string, path: string) =>
+        electronAPI.ipcRenderer.invoke("fs:watcher:add", watchId, path)
+    }
+  },
+
+  readFile: (filePath: string) => electronAPI.ipcRenderer.invoke("fs:file:read", filePath),
   writeFile: (filePath: string, content: string) =>
-    electronAPI.ipcRenderer.invoke("fs:writeFile", filePath, content),
+    electronAPI.ipcRenderer.invoke("fs:file:write", filePath, content),
   getVersion: () => electronAPI.ipcRenderer.invoke("version:get"),
   checkUpdate: () => electronAPI.ipcRenderer.invoke("version:check")
 };

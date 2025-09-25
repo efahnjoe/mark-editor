@@ -1,2 +1,2 @@
-export * from "./meta";
-export * from "./tree-nodes";
+export * from "./meta.js";
+export * from "./tree-nodes.js";

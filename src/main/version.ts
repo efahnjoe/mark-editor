@@ -1,17 +1,21 @@
 import { app } from "electron";
 import semver from "semver";
-import { ok, fail } from "@utils/result";
-import type { Ok, Result } from "@utils/result";
+import { ok, fail, logger } from "@utils/index";
+import type { Result } from "@utils/result";
 
 const version = app.getVersion();
 
-const GITHUB_REPO = "efahnjoe/mark-editor";
+const GITHUB_OWNER = import.meta.env.VITE_GITHUB_OWNER;
+const GITHUB_REPO = import.meta.env.VITE_GITHUB_REPO;
 
-if (!GITHUB_REPO) {
-  console.warn("VITE_GITHUB_REPO not configured, update check will be skipped.");
+if (!GITHUB_OWNER || !GITHUB_REPO) {
+  logger.warn(
+    "VITE_GITHUB_OWNER or VITE_GITHUB_REPO not configured, update check will be skipped.",
+    "check:version"
+  );
 }
 
-export const getVersion = (): Ok<{
+export const getVersion = (): Result<{
   version: string;
 }> => {
   return ok({ version });
@@ -31,18 +35,18 @@ export const checkUpdate = async (): Promise<
   }
 
   try {
-    const url = `https://api.github.com/repos/${GITHUB_REPO}/releases/latest`;
+    const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
 
     const res = await fetch(url, {
       method: "GET",
       headers: {
         Accept: "application/vnd.github.v3+json",
-        "User-Agent": "Electron-App-Update-Checker" // GitHub 要求
+        "User-Agent": "Mark-Editor"
       }
     });
 
     if (!res.ok) {
-      return fail(`HTTP ${res.status}: ${res.statusText}`, res.status);
+      return fail(res.statusText, res.status);
     }
 
     const data = await res.json();
@@ -50,7 +54,14 @@ export const checkUpdate = async (): Promise<
 
     const latestVersion = remoteTag.replace(/^v/, "");
 
-    const localVersion = getVersion().payload.version.replace(/^v/, "");
+    const result = getVersion();
+    let localVersion: string = "0.0.1";
+
+    if (result.success) {
+      localVersion = result.payload.version.replace(/^v/, "");
+    }
+
+    // const localVersion = getVersion().payload.version.replace(/^v/, "");
 
     const hasUpdate = semver.gt(latestVersion, localVersion);
 

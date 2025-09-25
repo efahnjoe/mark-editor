@@ -9,8 +9,7 @@
   ],
   "compilerOptions": {
     "newLine": "lf",
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "ignoreDeprecations": "6.0",
     "moduleDetection": "force",
     "composite": true,
     "types": [

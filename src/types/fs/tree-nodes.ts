@@ -1,5 +1,7 @@
-import type { FsMeta } from "./meta";
-
-export interface FsTreeNodes extends FsMeta {
-  readonly children?: FsTreeNodes[];
+export interface FsNode {
+  name: string;
+  path: string;
+  isFile: boolean;
+  isDir: boolean;
+  children?: FsNode[];
 }
