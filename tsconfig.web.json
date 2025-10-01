@@ -11,8 +11,6 @@
   ],
   "compilerOptions": {
     "newLine": "lf",
-    // "ignoreDeprecations": "6.0",
-    // "module": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "composite": true,

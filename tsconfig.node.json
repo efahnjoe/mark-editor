@@ -9,11 +9,13 @@
   ],
   "compilerOptions": {
     "newLine": "lf",
-    "module": "node16",
-    "moduleResolution": "node16",
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "moduleDetection": "force",
     "composite": true,
     "types": [
+      "node",
       "electron-vite/node"
     ],
     "paths": {

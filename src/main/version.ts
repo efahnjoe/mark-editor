@@ -5,8 +5,8 @@ import type { Result } from "@utils/result";
 
 const version = app.getVersion();
 
-const GITHUB_OWNER = import.meta.env.VITE_GITHUB_OWNER;
-const GITHUB_REPO = import.meta.env.VITE_GITHUB_REPO;
+const GITHUB_OWNER = process.env.VITE_GITHUB_OWNER;
+const GITHUB_REPO = process.env.VITE_GITHUB_REPO;
 
 if (!GITHUB_OWNER || !GITHUB_REPO) {
   logger.warn(
