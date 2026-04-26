@@ -1,5 +1,7 @@
 # mark-editor
 
+**Package no longer supported.**
+
 ## APP Icon
 
 Icon provided by [IconFont](https://www.iconfont.cn/).
